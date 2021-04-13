@@ -23,7 +23,7 @@ USE jobscontractors;
 -- );
 
 
--- CREATE TABLE wishlists 
+-- CREATE TABLE contractors 
 -- ( 
 --   id INT NOT NULL AUTO_INCREMENT, 
 --   title VARCHAR(255) NOT NULL,
@@ -36,11 +36,11 @@ USE jobscontractors;
 -- );
 
 
--- CREATE TABLE wishlistjobs
+-- CREATE TABLE contractorjobs
 -- (
 --   id INT NOT NULL AUTO_INCREMENT, 
 --   jobId INT,
---   wishlistId INT,
+--   contractorId INT,
 --   creatorId VARCHAR(255),
 --   PRIMARY KEY (id),
 
@@ -52,8 +52,8 @@ USE jobscontractors;
 --    REFERENCES jobs (id)
 --    ON DELETE CASCADE,
 
---   FOREIGN KEY (wishlistId)
---    REFERENCES wishlists (id)
+--   FOREIGN KEY (contractorId)
+--    REFERENCES contractors (id)
 --    ON DELETE CASCADE
 
 -- )
