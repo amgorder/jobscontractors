@@ -11,7 +11,7 @@ namespace jobscontractors.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ContractorsController
+    public class ContractorsController : ControllerBase
     {
         private readonly ContractorsService _service;
         private readonly JobsService _pserv;

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace jobscontractors.Controllers
 {
-    public class ContractorJobsController
+    public class ContractorJobsController : ControllerBase
     {
         private readonly ContractorJobsService _service;
 

@@ -19,10 +19,10 @@ namespace jobscontractors.Repositories
         {
             string sql = @"
       SELECT 
-      prod.*,
+      j.*,
       prof.*
-      FROM jobs prod
-      JOIN profiles prof ON prod.creatorId = prof.id";
+      FROM jobs j
+      JOIN profiles prof ON j.creatorId = prof.id";
             return _db.Query<Job, Profile, Job>(sql, (job, profile) =>
             {
                 job.Creator = profile;
@@ -79,15 +79,15 @@ namespace jobscontractors.Repositories
         }
 
 
-        internal IEnumerable<WishListJobViewModel> GetJobsByListId(int id)
+        internal IEnumerable<ContractorJobViewModel> GetJobsByListId(int id)
         {
             string sql = @"SELECT 
       j.*,
-      wlp.id AS WishListJobId
-      FROM wishlistjobs wlp
-      JOIN jobs j ON p.id = wlp.jobId
-      WHERE wishlistId = @id;";
-            return _db.Query<WishListJobViewModel>(sql, new { id });
+      cj.id AS ContractorJobId
+      FROM contractorjobs cj
+      JOIN jobs j ON j.id = cj.jobId
+      WHERE contractorId = @id;";
+            return _db.Query<ContractorJobViewModel>(sql, new { id });
         }
     }
 }

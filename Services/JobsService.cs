@@ -58,7 +58,7 @@ namespace jobscontractors.Services
             return "delorted";
         }
 
-        internal IEnumerable<WishListJobViewModel> GetJobsByListId(int id)
+        internal IEnumerable<ContractorJobViewModel> GetJobsByListId(int id)
         {
             return _repo.GetJobsByListId(id);
         }
