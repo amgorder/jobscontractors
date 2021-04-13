@@ -1,14 +1,14 @@
 USE jobscontractors;
-CREATE TABLE profiles
-(
-  id VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  name VARCHAR(255),
-  picture VARCHAR(255),
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE profiles
+-- (
+--   id VARCHAR(255) NOT NULL,
+--   email VARCHAR(255) NOT NULL,
+--   name VARCHAR(255),
+--   picture VARCHAR(255),
+--   PRIMARY KEY (id)
+-- );
 
--- CREATE TABLE products
+-- CREATE TABLE jobs
 -- ( 
 --   id INT NOT NULL AUTO_INCREMENT,
 --   title VARCHAR(255) NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE profiles
 -- );
 
 
--- CREATE TABLE wishlistproducts
+-- CREATE TABLE wishlistjobs
 -- (
 --   id INT NOT NULL AUTO_INCREMENT, 
---   productId INT,
+--   jobId INT,
 --   wishlistId INT,
 --   creatorId VARCHAR(255),
 --   PRIMARY KEY (id),
@@ -48,8 +48,8 @@ CREATE TABLE profiles
 --    REFERENCES profiles (id)
 --    ON DELETE CASCADE,
 
---   FOREIGN KEY (productId)
---    REFERENCES products (id)
+--   FOREIGN KEY (jobId)
+--    REFERENCES jobs (id)
 --    ON DELETE CASCADE,
 
 --   FOREIGN KEY (wishlistId)

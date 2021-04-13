@@ -1,24 +1,25 @@
 using System;
-using System.Threading.Tasks;
-using jobscontractors.Models;
+using System.Collections.Generic;
 using jobscontractors.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace jobscontractors.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class JobsController : ControllerBase
+    public class ContractorsController
     {
-        private readonly JobsService _service;
-        public JobsController(JobsService js)
+        private readonly ContractorsService _service;
+        private readonly JobsService _pserv;
+
+        public ContractorsController(ContractorsService service, JobsService pserv)
         {
-            _service = js;
+            _service = service;
+            _pserv = pserv;
         }
 
         [HttpGet]
-        public ActionResult<Job> Get()
+        public ActionResult<IEnumerable<Contractor>> Get()
         {
             try
             {
@@ -31,7 +32,7 @@ namespace jobscontractors.Controllers
         }
 
         [HttpGet("{id}")]  // NOTE '{}' signifies a var parameter
-        public ActionResult<Job> Get(int id)
+        public ActionResult<Contractor> Get(int id)
         {
             try
             {
@@ -47,15 +48,15 @@ namespace jobscontractors.Controllers
         [HttpPost]
         [Authorize]
         // NOTE ANYTIME you need to use Async/Await you will return a Task
-        public async Task<ActionResult<Job>> Create([FromBody] Job newJob)
+        public async Task<ActionResult<Contractor>> Create([FromBody] Contractor newWList)
         {
             try
             {
                 // NOTE HttpContext == 'req'
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-                newJob.CreatorId = userInfo.Id;
-                newJob.Creator = userInfo;
-                return Ok(_service.Create(newJob));
+                newWList.CreatorId = userInfo.Id;
+                newWList.Creator = userInfo;
+                return Ok(_service.Create(newWList));
             }
             catch (Exception e)
             {
@@ -65,11 +66,12 @@ namespace jobscontractors.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<Job>> Edit([FromBody] Job updated, int id)
+        public async Task<ActionResult<Contractor>> Edit([FromBody] Contractor updated, int id)
         {
             try
             {
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                //NOTE attach creatorId so you can validate they are the creator of the original
                 updated.CreatorId = userInfo.Id;
                 updated.Creator = userInfo;
                 updated.Id = id;
@@ -83,12 +85,31 @@ namespace jobscontractors.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult<Job>> Delete(int id)
+        public async Task<ActionResult<Contractor>> Delete(int id)
         {
             try
             {
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                //NOTE send userinfo.id so you can validate they are the creator of the original
+
                 return Ok(_service.Delete(id, userInfo.Id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
+        //api/wishlists/4/products
+
+        [HttpGet("{id}/products")]  // NOTE '{}' signifies a var parameter
+        public ActionResult<IEnumerable<ContractorJobViewModel>> GetJobsByListId(int id)
+        {
+            try
+            {
+                return Ok(_pserv.GetJobsByListId(id));
             }
             catch (Exception e)
             {
