@@ -36,24 +36,24 @@ USE jobscontractors;
 -- );
 
 
--- CREATE TABLE contractorjobs
--- (
---   id INT NOT NULL AUTO_INCREMENT, 
---   jobId INT,
---   contractorId INT,
---   creatorId VARCHAR(255),
---   PRIMARY KEY (id),
+CREATE TABLE contractorjobs
+(
+  id INT NOT NULL AUTO_INCREMENT, 
+  jobId INT,
+  contractorId INT,
+  creatorId VARCHAR(255),
+  PRIMARY KEY (id),
 
---    FOREIGN KEY (creatorId)
---    REFERENCES profiles (id)
---    ON DELETE CASCADE,
+   FOREIGN KEY (creatorId)
+   REFERENCES profiles (id)
+   ON DELETE CASCADE,
 
---   FOREIGN KEY (jobId)
---    REFERENCES jobs (id)
---    ON DELETE CASCADE,
+  FOREIGN KEY (jobId)
+   REFERENCES jobs (id)
+   ON DELETE CASCADE,
 
---   FOREIGN KEY (contractorId)
---    REFERENCES contractors (id)
---    ON DELETE CASCADE
+  FOREIGN KEY (contractorId)
+   REFERENCES contractors (id)
+   ON DELETE CASCADE
 
--- )
+)
