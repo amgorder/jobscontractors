@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +28,45 @@ namespace jobscontractors
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //NOTE this is required for using auth
+            // services.AddAuthentication(options =>
+            //        {
+            //            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //        }).AddJwtBearer(options =>
+            //        {
+            //            options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+            //            options.Audience = Configuration["Auth0:Audience"];
+            //        });
+
+            //NOTE this is for communicating with client
+            services.AddCors(options =>
+              {
+                  options.AddPolicy("CorsDevPolicy", builder =>
+                {
+                    builder
+                        .WithOrigins(new string[]{
+                            "http://localhost:8080",
+                            "http://localhost:8081"
+                            })
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+              });
+
+            services.AddScoped<IDbConnection>(x => CreateDbConnection());
+
+            // services.AddTransient<ProfilesService>();
+            // services.AddTransient<ProfilesRepository>();
+            // services.AddTransient<ProductsService>();
+            // services.AddTransient<ProductsRepository>();
+            // services.AddTransient<WishListsService>();
+            // services.AddTransient<WishListsRepository>();
+            // services.AddTransient<WishListProductsService>();
+            // services.AddTransient<WishListProductsRepository>();
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,6 +87,9 @@ namespace jobscontractors
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //NOTE this is required to have auth work 
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
