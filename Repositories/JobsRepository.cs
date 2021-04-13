@@ -46,17 +46,17 @@ namespace jobscontractors.Repositories
             }, new { id }, splitOn: "id").FirstOrDefault();
         }
 
-        internal Job Create(Job newProd)
+        internal Job Create(Job newJob)
         {
             string sql = @"
       INSERT INTO jobs 
       (title, description, price, creatorId) 
       VALUES 
-      (@Title, @Description, @Price, @creatorId);
+      (@Title, @Description, @Price, @CreatorId);
       SELECT LAST_INSERT_ID();";
-            int id = _db.ExecuteScalar<int>(sql, newProd);
-            newProd.Id = id;
-            return newProd;
+            int id = _db.ExecuteScalar<int>(sql, newJob);
+            newJob.Id = id;
+            return newJob;
         }
 
         internal Job Edit(Job updated)

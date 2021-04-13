@@ -29,9 +29,9 @@ namespace jobscontractors.Services
             return data;
         }
 
-        internal Job Create(Job newProd)
+        internal Job Create(Job newJob)
         {
-            return _repo.Create(newProd);
+            return _repo.Create(newJob);
         }
 
         internal Job Edit(Job updated)
