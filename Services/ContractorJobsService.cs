@@ -14,47 +14,17 @@ namespace jobscontractors.Services
             _repo = repo;
         }
 
-        internal IEnumerable<ContractorJob> GetAll()
+        internal ContractorJob Create(ContractorJob newCJ)
         {
-            return _repo.GetAll();
+            //TODO if they are creating a ContractorJob, make sure they are the creator of the list
+            return _repo.Create(newCJ);
+
         }
 
-        internal ContractorJob GetById(int id)
+        internal void Delete(int id)
         {
-            var data = _repo.GetById(id);
-            if (data == null)
-            {
-                throw new Exception("Invalid Id");
-            }
-            return data;
-        }
-
-        internal ContractorJob Create(ContractorJob newProd)
-        {
-            return _repo.Create(newProd);
-        }
-
-        internal ContractorJob Edit(ContractorJob updated)
-        {
-            var original = GetById(updated.Id);
-            if (original.CreatorId != updated.CreatorId)
-            {
-                throw new Exception("Invalid Edit Permissions");
-            }
-            updated.Title = updated.Title != null ? updated.Title : original.Title;
-            return _repo.Edit(updated);
-        }
-
-
-        internal string Delete(int id, string userId)
-        {
-            var original = GetById(id);
-            if (original.CreatorId != userId)
-            {
-                throw new Exception("Invalid Delete Permissions");
-            }
+            //NOTE getbyid to validate its valid and you are the creator
             _repo.Delete(id);
-            return "delorted";
         }
     }
 }

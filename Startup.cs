@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using jobscontractors.Repositories;
+using jobscontractors.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MySqlConnector;
 
 namespace jobscontractors
 {
@@ -29,15 +33,15 @@ namespace jobscontractors
         {
 
             //NOTE this is required for using auth
-            // services.AddAuthentication(options =>
-            //        {
-            //            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        }).AddJwtBearer(options =>
-            //        {
-            //            options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
-            //            options.Audience = Configuration["Auth0:Audience"];
-            //        });
+            services.AddAuthentication(options =>
+                   {
+                       options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                       options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                   }).AddJwtBearer(options =>
+                   {
+                       options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                       options.Audience = Configuration["Auth0:Audience"];
+                   });
 
             //NOTE this is for communicating with client
             services.AddCors(options =>
@@ -57,14 +61,14 @@ namespace jobscontractors
 
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
 
-            // services.AddTransient<ProfilesService>();
-            // services.AddTransient<ProfilesRepository>();
-            // services.AddTransient<ProductsService>();
-            // services.AddTransient<ProductsRepository>();
-            // services.AddTransient<WishListsService>();
-            // services.AddTransient<WishListsRepository>();
-            // services.AddTransient<WishListProductsService>();
-            // services.AddTransient<WishListProductsRepository>();
+            services.AddTransient<ProfilesService>();
+            services.AddTransient<ProfilesRepository>();
+            services.AddTransient<JobsService>();
+            services.AddTransient<JobsRepository>();
+            services.AddTransient<ContractorsService>();
+            services.AddTransient<ContractorsRepository>();
+            services.AddTransient<ContractorJobsService>();
+            services.AddTransient<ContractorJobsRepository>();
 
 
             services.AddControllers();
@@ -73,7 +77,11 @@ namespace jobscontractors
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "jobscontractors", Version = "v1" });
             });
         }
-
+        private IDbConnection CreateDbConnection()
+        {
+            var connectionString = Configuration["db:gearhost"];
+            return new MySqlConnection(connectionString);
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

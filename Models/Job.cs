@@ -13,4 +13,10 @@ namespace jobscontractors.Models
         public string CreatorId { get; set; }
         public Profile Creator { get; set; }
     }
+    //this will be used to get products by listId
+    public class ContractorJobViewModel : Job
+    {
+        public int ContractorJobId { get; set; }
+
+    }
 }
