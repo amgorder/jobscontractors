@@ -1,10 +1,10 @@
 namespace jobscontractors.Models
 {
-    public class ContractorJob
+    public class Stickynote
     {
         public int Id { get; set; }
-        public int ContractorId { get; set; }
-        public int JobId { get; set; }
+        public string MemberId { get; set; }
+        public int WhiteboardId { get; set; }
         public string CreatorId { get; set; }
     }
 }

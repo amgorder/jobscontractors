@@ -3,31 +3,32 @@ using CodeWorks.Auth0Provider;
 using jobscontractors.Models;
 using jobscontractors.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace jobscontractors.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ContractorJobsController : ControllerBase
+    public class StickynotesController : ControllerBase
     {
-        private readonly ContractorJobsService _service;
+        private readonly StickynotesService _service;
 
-        public ContractorJobsController(ContractorJobsService service)
+        public StickynotesController(StickynotesService service)
         {
             _service = service;
         }
 
+
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<ContractorJob>> CreateAsync([FromBody] ContractorJob newWLP)
+        public async Task<ActionResult<string>> CreateAsync([FromBody] Stickynote pm)
         {
             try
             {
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-                newWLP.CreatorId = userInfo.Id;
-                return Ok(_service.Create(newWLP));
+                pm.CreatorId = userInfo.Id;
+                return Ok(_service.Create(pm));
+
             }
             catch (System.Exception err)
             {
@@ -36,12 +37,15 @@ namespace jobscontractors.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<string> Delete(int id)
+        [Authorize]
+        public async Task<ActionResult<string>> DeleteAsync(int id)
         {
             try
             {
-                _service.Delete(id);
-                return Ok("deleted");
+                Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                _service.Delete(id, userInfo.Id);
+                return Ok("Deleted");
+
             }
             catch (System.Exception err)
             {

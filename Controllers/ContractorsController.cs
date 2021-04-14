@@ -107,9 +107,9 @@ namespace jobscontractors.Controllers
 
 
 
-        //api/wishlists/4/products
+        //api/wishlists/4/jobs
 
-        [HttpGet("{id}/products")]  // NOTE '{}' signifies a var parameter
+        [HttpGet("{id}/jobs")]  // NOTE '{}' signifies a var parameter
         public ActionResult<IEnumerable<ContractorJobViewModel>> GetJobsByListId(int id)
         {
             try

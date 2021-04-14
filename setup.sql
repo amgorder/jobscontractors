@@ -57,3 +57,42 @@ USE jobscontractors;
 --    ON DELETE CASCADE
 
 -- )
+
+-- DROP TABLE whiteboards;
+-- CREATE TABLE whiteboards
+-- (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   creatorId VARCHAR(255) NOT NULL,
+--   name VARCHAR(255) NOT NULL,
+--   public TINYINT(1),
+
+--   PRIMARY KEY (id),
+
+--   FOREIGN KEY (creatorId)
+--     REFERENCES profiles (id)
+--     ON DELETE CASCADE
+
+-- );
+DROP TABLE stickynotes;
+CREATE TABLE stickynotes
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  memberId VARCHAR(255) NOT NULL,
+  whiteboardId INT NOT NULL,
+  creatorId VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (creatorId)
+    REFERENCES profiles (id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (memberId)
+    REFERENCES profiles (id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (whiteboardId)
+    REFERENCES whiteboards (id)
+    ON DELETE CASCADE
+
+)

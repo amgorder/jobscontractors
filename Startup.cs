@@ -69,6 +69,10 @@ namespace jobscontractors
             services.AddTransient<ContractorsRepository>();
             services.AddTransient<ContractorJobsService>();
             services.AddTransient<ContractorJobsRepository>();
+            services.AddTransient<WhiteboardsService>();
+            services.AddTransient<WhiteboardsRepository>();
+            services.AddTransient<StickynotesService>();
+            services.AddTransient<StickynotesRepository>();
 
 
             services.AddControllers();
